@@ -27,9 +27,24 @@
  *
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
+int joystickGetAnalog (
+	unsigned char joystick,
+	unsigned char axis
+);
+void motorSet (
+	unsigned char channel,
+	int speed
+);
 void operatorControl() {
+	int power;
+	int turn;
 	while (1) {
-		printf("Hello PROS User!\n");
+		power = joystickGetAnalog(1, 2);
+		turn = joystickGetAnalog(1, 1);
+		motorSet(2, power + turn); // frontLeftMotor
+		motorSet(3, power - turn); // backLeftMotor
+		motorSet(4, power + turn); // backRightMotor
+		motorSet(5, power - turn); // frontRightMotor
 		delay(20);
 	}
 }
