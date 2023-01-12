@@ -8,6 +8,7 @@
  */
 
 #include "main.h"
+#include "chassis.h"
 
 /* test */
 /*
@@ -41,10 +42,7 @@ void operatorControl() {
 	while (1) {
 		power = joystickGetAnalog(1, 2);
 		turn = joystickGetAnalog(1, 1);
-		motorSet(2, power + turn); // frontLeftMotor
-		motorSet(3, power - turn); // backLeftMotor
-		motorSet(4, power + turn); // backRightMotor
-		motorSet(5, power - turn); // frontRightMotor
+		chassis(power+turn, power-turn);
 		delay(20);
 	}
 }
