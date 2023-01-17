@@ -27,6 +27,7 @@
 
 #include <API.h>
 #include "chassis.h"
+Ultrasonic frontSonar;
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus

@@ -39,10 +39,14 @@ void motorSet (
 void operatorControl() {
 	int power;
 	int turn;
+	int distanceToObject;
 	while (1) {
 		power = joystickGetAnalog(1, 2);
 		turn = joystickGetAnalog(1, 1);
 		chassis(power+turn, power-turn);
+		if (joystickGetAnalog(1, 8 JOY_RIGHT)) {
+			distanceToObject = ultrasonicGet(frontSonar);
+		}
 		delay(20);
 	}
 }
