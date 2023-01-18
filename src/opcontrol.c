@@ -44,9 +44,10 @@ void operatorControl() {
 		power = joystickGetAnalog(1, 2);
 		turn = joystickGetAnalog(1, 1);
 		chassis(power+turn, power-turn);
-		if (joystickGetAnalog(1, 8 JOY_RIGHT)) {
+		if (joystickGetDigital(1, 8, JOY_RIGHT)) {
 			distanceToObject = ultrasonicGet(frontSonar);
+			printf("the distance to the object is %d", distanceToObject);
 		}
-		delay(20);
+		delay(50);
 	}
 }

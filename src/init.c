@@ -18,7 +18,6 @@
  * configure a UART port (usartOpen()) but cannot set up an LCD (lcdInit()).
  */
 void initializeIO() {
-    frontSonar = ultrasonicInit[orange_port_num, yellow_port_num];
 }
 
 /*
@@ -35,4 +34,5 @@ void initializeIO() {
  * can be implemented in this task if desired.
  */
 void initialize() {
+    frontSonar = ultrasonicInit[2, 1];
 }
