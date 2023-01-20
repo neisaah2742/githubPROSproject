@@ -10,7 +10,6 @@
 #include "main.h"
 #include "chassis.h"
 
-/* test */
 /*
  * Runs the user operator control code. This function will be started in its own task with the
  * default priority and stack size whenever the robot is enabled via the Field Management System
@@ -43,10 +42,19 @@ void operatorControl() {
 	while (1) {
 		power = joystickGetAnalog(1, 2);
 		turn = joystickGetAnalog(1, 1);
-		chassis(power+turn, power-turn);
+		chassisSet(power+turn, power-turn);
 		if (joystickGetDigital(1, 8, JOY_RIGHT)) {
 			distanceToObject = ultrasonicGet(frontSonar);
 			printf("the distance to the object is %d", distanceToObject);
+			if (distanceToObject > 20) {
+				chassisSet(100, 100);
+			}
+			else if (distanceToObject < 20) {
+				chassisSet(-100, -100);
+			}
+			else {
+				chassisSet(0, 0);
+			}
 		}
 		delay(50);
 	}
