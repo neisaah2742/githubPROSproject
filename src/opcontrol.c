@@ -9,6 +9,8 @@
 
 #include "main.h"
 #include "chassis.h"
+Ultrasonic leftSonar;
+Ultrasonic rightSonar;
 
 /*
  * Runs the user operator control code. This function will be started in its own task with the
@@ -31,29 +33,52 @@ int joystickGetAnalog (
 	unsigned char joystick,
 	unsigned char axis
 );
+
 void motorSet (
 	unsigned char channel,
 	int speed
 );
+
+void initialize() {
+    rightSonar = ultrasonicInit(2, 1);
+    leftSonar = ultrasonicInit(4, 3);
+}
+
 void operatorControl() {
 	int power;
 	int turn;
-	int distanceToObject;
+	//installing TWO ultrasonic sensors will allow us to determine if the object is to the right or left of the robot
+	int distanceRight;
+	int distanceLeft;
 	while (1) {
 		power = joystickGetAnalog(1, 2);
 		turn = joystickGetAnalog(1, 1);
 		chassisSet(power+turn, power-turn);
 		if (joystickGetDigital(1, 8, JOY_RIGHT)) {
-			distanceToObject = ultrasonicGet(frontSonar);
-			printf("the distance to the object is %d", distanceToObject);
-			if (distanceToObject > 20) {
-				chassisSet(100, 100);
+			distanceRight = ultrasonicGet(rightSonar);
+			distanceLeft = ultrasonicGet(leftSonar);
+			//printf("the distance to the object is %d", distanceToObject);
+			//only go completely forward or completely back if the object is right in front of the robot
+			if (distanceRight == distanceLeft) {
+				if (distanceRight > 20) {
+					chassisSet(100, 100);
+				}
+				else if (distanceRight < 20) {
+					chassisSet(-100, -100);
+				}
+				else {
+					chassisSet(0, 0);
+				}
 			}
-			else if (distanceToObject < 20) {
-				chassisSet(-100, -100);
+			else if (distanceRight < distanceLeft) {
+				// this means the object is to the right of the robot
+				// left motors should run forward while right motors run back (not at full speed)
+				chassisSet(50, -50);
 			}
-			else {
-				chassisSet(0, 0);
+			else if (distanceRight < distanceLeft) {
+				// object is to the left of the robot
+				// right motors should run forward while left motors run back (not at full speed)
+				chassisSet(-50, 50);
 			}
 		}
 		delay(50);
