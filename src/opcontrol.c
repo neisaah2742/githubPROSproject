@@ -44,6 +44,8 @@ void initialize() {
     leftSonar = ultrasonicInit(4, 3);
 }
 
+void chassisSet(int left, int right);
+
 void operatorControl() {
 	int power;
 	int turn;
