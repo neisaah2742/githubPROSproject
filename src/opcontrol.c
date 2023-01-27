@@ -59,9 +59,9 @@ void operatorControl() {
 		if (joystickGetDigital(1, 8, JOY_RIGHT)) {
 			distanceRight = ultrasonicGet(rightSonar);
 			distanceLeft = ultrasonicGet(leftSonar);
-			//printf("the distance to the object is %d", distanceToObject);
 			//only go completely forward or completely back if the object is right in front of the robot
 			if (distanceRight == distanceLeft) {
+				printf("the distance to the object is %d", distanceRight);
 				if (distanceRight > 20) {
 					chassisSet(100, 100);
 				}
@@ -74,6 +74,7 @@ void operatorControl() {
 			}
 			else if (distanceRight < distanceLeft) {
 				// this means the object is to the right of the robot
+				printf("the distance to the object is %d", distanceRight);
 				// left motors should run forward while right motors run back (not at full speed)
 				chassisSet(50, -50);
 			}
