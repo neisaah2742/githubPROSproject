@@ -60,30 +60,34 @@ void operatorControl() {
 			distanceRight = ultrasonicGet(rightSonar);
 			distanceLeft = ultrasonicGet(leftSonar);
 			//only go completely forward or completely back if the object is right in front of the robot
-			if (distanceRight == distanceLeft) {
+			if (abs(distanceRight - distanceLeft) <= 7) {
 				printf("the distance to the object is %d", distanceRight);
-				if (distanceRight > 20) {
+				if (distanceRight > 50) {
 					chassisSet(100, 100);
 				}
-				else if (distanceRight < 20) {
+				else if (distanceRight < 50) {
 					chassisSet(-100, -100);
 				}
 				else {
 					chassisSet(0, 0);
 				}
 			}
-			else if (distanceRight < distanceLeft) {
-				// this means the object is to the right of the robot
-				printf("the distance to the object is %d", distanceRight);
-				// left motors should run forward while right motors run back (not at full speed)
-				chassisSet(50, -50);
-			}
-			else if (distanceRight < distanceLeft) {
-				// object is to the left of the robot
-				// right motors should run forward while left motors run back (not at full speed)
-				chassisSet(-50, 50);
+			else {
+				if (distanceRight < distanceLeft) {
+					// this means the object is to the right of the robot
+					printf("the distance to the object is %d", distanceRight);
+					// left motors should run forward (not at full speed)
+					// However, with the way the motors have been manually set to combat the inverted configuration on the controller, left forward is negative
+					chassisSet(-40, 0);
+				}
+				else if (distanceRight > distanceLeft) {
+					// object is to the left of the robot
+					// left motors run back (not at full speed)
+					// However, with the way the motors have been manually set to combat the inverted configuration on the controller, left backward is positive
+					chassisSet(40, 0);
+				}
 			}
 		}
-		delay(50);
+		delay(20);
 	}
 }
